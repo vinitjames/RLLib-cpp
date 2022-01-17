@@ -1,3 +1,7 @@
+#ifndef MODEL_H
+#define MODEL_H
+
+
 #include <cstddef>
 #include <vector>
 #include <random>
@@ -24,7 +28,7 @@ private:
 
 template< typename Distribution>
 template <typename... Params>
-Model<Distribution>::Model(const std::size_t& arms, Params... params)
+inline Model<Distribution>::Model(const std::size_t& arms, Params... params)
 	{
 		std::random_device rd{};
 		_rand_engine.seed(rd());
@@ -33,24 +37,25 @@ Model<Distribution>::Model(const std::size_t& arms, Params... params)
 }
 
 template< typename Distribution>
-double Model<Distribution>::sample_reward(const std::size_t& arm) const{
+inline double Model<Distribution>::sample_reward(const std::size_t& arm) const{
 	if(arm >= _action_dist.size())
 		return 0;
 	return _action_dist[arm](_rand_engine);
 }
 
 template< typename Distribution>
-const std::vector<Distribution>& Model<Distribution>::get_reward_distribution() const{
+inline const std::vector<Distribution>& Model<Distribution>::get_reward_distribution() const{
 	return _action_dist;
 
 }
 
 template< typename Distribution>
-std::size_t Model<Distribution>::get_arm_size() const{
+inline std::size_t Model<Distribution>::get_arm_size() const{
 	return _action_dist.size();
 }
 
 
 
 
+#endif /* MODEL_H */
 
