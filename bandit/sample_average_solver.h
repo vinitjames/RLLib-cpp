@@ -13,7 +13,7 @@ public:
 	SampleAverageSolver(Model<Distribution>& model,
 						StatelessPolicyInterface<TAction, TQvalue>& policy);
 
-	void solve(const std::size_t& steps);
+	double solve(const std::size_t& steps);
 	
 
  private:
@@ -30,15 +30,18 @@ SampleAverageSolver(Model<Distribution>& model,
 
 
 template<typename Distribution, typename TAction, typename TQvalue>
-inline void SampleAverageSolver<Distribution, TAction, TQvalue>::solve(const std::size_t& steps){
+inline double  SampleAverageSolver<Distribution, TAction, TQvalue>::solve(const std::size_t& steps){
 	_policy.init_qvalue(1.0);
+	double cumm_reward = 0;
 	for (int i = 0; i < steps; ++i) {
 		std::size_t action = _policy.sample_action();
 		double reward = _model.sample_reward(action);
 		_action_count[action]++;
 		_policy.get_qvalue_est()[action] +=
 			(reward  - _policy.get_qvalue_est()[action]) / _action_count[action];
+		cumm_reward += reward;		
 	}
+	return cumm_reward/steps;
 }
 
 

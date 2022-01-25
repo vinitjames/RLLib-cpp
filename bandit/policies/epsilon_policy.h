@@ -16,9 +16,8 @@ public:
 
 private:
 	static std::size_t _get_max_element(const std::vector<double>& vect);
-	static std::size_t _select_randomly(const std::vector<std::size_t>& max_elements);
 	double _epsilon;
-		
+	
 };
 
 #endif /* EPISOLN_POLICY_H */
